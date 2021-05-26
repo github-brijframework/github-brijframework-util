@@ -4,7 +4,12 @@ package org.brijframework.util.reflect;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.brijframework.util.accessor.PropertyAccessorUtil;
 import org.brijframework.util.asserts.AssertMessage;
@@ -17,6 +22,19 @@ import org.brijframework.util.asserts.Assertion;
  *
  */
 public abstract class InstanceUtil {
+	
+	public static Object getImpletationInstanse(Class<?> cls) {
+		if(List.class.isAssignableFrom(cls)) {
+			return new ArrayList<>();
+		}
+		if(Set.class.isAssignableFrom(cls)) {
+			return new HashSet<>();
+		}
+		if(Map.class.isAssignableFrom(cls)) {
+			return new HashMap<>();
+		}
+		return getInstance(cls);
+	}
 	
 
 	public static boolean isAssignable(Class<?> cls) {

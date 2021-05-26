@@ -17,6 +17,7 @@ public abstract class ConstructUtil {
 		for (Constructor<?> constructor : _class.getDeclaredConstructors()) {
 			constructors.add(constructor);
 		}
+		constructors.sort((constructor1,constructor2)->Integer.valueOf(constructor1.getParameterTypes().length).compareTo(Integer.valueOf(constructor2.getParameterTypes().length)));
 		return constructors;
 	}
 

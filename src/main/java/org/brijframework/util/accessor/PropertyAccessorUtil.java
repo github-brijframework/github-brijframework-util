@@ -80,7 +80,7 @@ public class PropertyAccessorUtil{
 		Assertion.notNull(bean, AssertMessage.model_object_null_message);
 		Assertion.notNull(field, AssertMessage.field_name_null_message);
 		AccessibleObject colling = MetaAccessorUtil.findGetterMeta(bean.getClass(), field, ReflectionAccess.PRIVATE);
-		Assertion.notNull(colling, AssertMessage.unbounded_key_message + " " + field);
+		Assertion.notNull(colling, AssertMessage.unbounded_key_message + " " + field+" of bean : "+bean);
 		return getProperty(bean, colling, level);
 	}
 	
@@ -176,7 +176,13 @@ public class PropertyAccessorUtil{
 	public static void setSafeProperty(Object bean, String field, Object value) {
 		AccessibleObject colling = MetaAccessorUtil.setPropertyMeta(bean.getClass(), field, ReflectionAccess.PRIVATE, value);
 		if(colling!=null) {
-			setProperty(bean, colling, ReflectionAccess.PUBLIC, value);
+			setSafeProperty(bean, colling, value);
+		}
+	}
+
+	public static void setSafeProperty(Object bean, AccessibleObject colling, Object value) {
+		if(colling!=null) {
+			setProperty(bean, colling, ReflectionAccess.PRIVATE, value);
 		}
 	}
 

@@ -14,6 +14,17 @@ import org.brijframework.util.asserts.Assertion;
 
 public abstract class ParamUtil {
 	
+	public static Object[] getDefaultDgruments(Constructor<?> _method) {
+		Assertion.notNull(_method, AssertMessage.method_object_null_message);
+		Class<?>[] _parames=_method.getParameterTypes();
+		Object[] _objects=new Object[_parames.length];
+		for (int i = 0; i < _parames.length; i++) {
+			Class<?> cls = _parames[i];
+			_objects[i]=InstanceUtil.getImpletationInstanse(cls);
+		}
+		return _objects;
+	}
+	
 	public static Class<?>[] paramClasses(Object..._objects) {
 		if(_objects==null){
 			return null;
