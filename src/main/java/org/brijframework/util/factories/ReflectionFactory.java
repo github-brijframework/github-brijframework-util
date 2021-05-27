@@ -8,10 +8,6 @@ public final class ReflectionFactory {
 	private static final String INTERNAL_CLASS="INTERNAL_CLASS";
 	private static final String EXTERNAL_CLASS="EXTERNAL_CLASS";
 	private ConcurrentHashMap<String, Set<Class<?>>> cache=new ConcurrentHashMap<>();
-	{
-		getCache().put(INTERNAL_CLASS,new HashSet<>());
-		getCache().put(EXTERNAL_CLASS,new HashSet<>());
-	}
 	
 	private static  ReflectionFactory factory;
 	
@@ -23,21 +19,21 @@ public final class ReflectionFactory {
 		return factory;
 	}
 	
-	private void loadFactory() {
+	private ReflectionFactory loadFactory() {
+		getCache().put(INTERNAL_CLASS,new HashSet<>());
+		getCache().put(EXTERNAL_CLASS,new HashSet<>());
 		try {
-			ClassFileResourceUtil.getClassList().forEach(cls->{
-				getCache().get(INTERNAL_CLASS).add(cls);
-			});
+			getInternalClassList().addAll(ClassFileResourceUtil.getClassList());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		try {
-			JarFileResourceUtil.getClassList().forEach(cls->{
-				getCache().get(EXTERNAL_CLASS).add(cls);
-			});
+			getExternalClassList().addAll(JarFileResourceUtil.getClassList());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("getCache()="+getCache());
+		return this;
 	}
 
 	public ConcurrentHashMap<String, Set<Class<?>>> getCache() {
@@ -54,7 +50,7 @@ public final class ReflectionFactory {
 
 	
 	public static void main(String[] args) throws Exception {
-		System.out.println(ReflectionFactory.getFactory().getExternalClassList());
+		System.out.println("File "+ReflectionFactory.getFactory().loadFactory().getCache());
 	}
 
 	public boolean isProjectClass(Class<? extends Object> cls) {

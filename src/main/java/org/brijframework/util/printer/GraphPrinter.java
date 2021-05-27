@@ -83,12 +83,17 @@ public class GraphPrinter {
 			return;
 		}
 		Object t=object;
+		System.out.println(ValidationUtil.isBrijClass(object));
 		if(ValidationUtil.isBrijClass(object)) {
 			t=PropertyAccessorUtil.getProperties(object,ReflectionAccess.PRIVATE_NO_STATIC_FINAL);
+		}else if(ValidationUtil.isProjectClass(object)){
+			t=PropertyAccessorUtil.getProperties(object,ReflectionAccess.PRIVATE_NO_STATIC_FINAL);
 		}
+		System.out.println(ValidationUtil.isProjectClass(object));
 		if (t instanceof Map && tab == 0) {
 			tab = 1;
 		}
+		System.out.println("T="+t);
 		if (t instanceof Map) {
 			debugln("{");
 			printObject((Map) t, ++tab);
